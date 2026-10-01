@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webhooks - Guía Completa e Interfaz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">🪝 Webhooks</div>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#que-es">¿Qué es?</a></li>
+                <li><a href="#ejemplos">Ejemplos</a></li>
+                <li><a href="#gestor">Gestor</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Sección: Inicio -->
+    <section id="inicio" class="hero">
+        <div class="container">
+            <h1>Webhooks: Comunicación en Tiempo Real</h1>
+            <p>Aprende cómo funcionan los webhooks y gestiona los tuyos de forma sencilla</p>
+            <a href="#que-es" class="btn btn-primary">Descubre más</a>
+        </div>
+    </section>
+
+    <!-- Sección: ¿Qué es? -->
+    <section id="que-es" class="section">
+        <div class="container">
+            <h2>¿Qué es un Webhook?</h2>
+            
+            <div class="grid-2">
+                <div class="card">
+                    <h3>📡 Definición</h3>
+                    <p>Un webhook es un mecanismo que permite que una aplicación envíe datos a otra de forma automática cuando ocurre un evento específico. Es como un "callback" pero a través de HTTP.</p>
+                </div>
+                
+                <div class="card">
+                    <h3>🔄 Flujo</h3>
+                    <p>
+                        1. Registras una URL en el servicio A<br>
+                        2. Ocurre un evento en el servicio A<br>
+                        3. El servicio A envía datos a tu URL<br>
+                        4. Tu aplicación procesa los datos
+                    </p>
+                </div>
+                
+                <div class="card">
+                    <h3>⚡ Ventajas</h3>
+                    <p>
+                        ✓ Comunicación en tiempo real<br>
+                        ✓ No requiere polling constante<br>
+                        ✓ Reduce carga en servidores<br>
+                        ✓ Integración simple
+                    </p>
+                </div>
+                
+                <div class="card">
+                    <h3>🎯 Casos de Uso</h3>
+                    <p>
+                        • Pagos confirmados (Stripe, PayPal)<br>
+                        • Nuevos usuarios registrados<br>
+                        • Actualizaciones de pedidos<br>
+                        • Notificaciones en tiempo real
+                    </p>
+                </div>
+            </div>
+
+            <div class="comparison">
+                <h3>Polling vs Webhooks</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspecto</th>
+                            <th>Polling</th>
+                            <th>Webhooks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Latencia</td>
+                            <td>Alta (depende del intervalo)</td>
+                            <td>Baja (inmediato)</td>
+                        </tr>
+                        <tr>
+                            <td>Carga del servidor</td>
+                            <td>Alta</td>
+                            <td>Baja</td>
+                        </tr>
+                        <tr>
+                            <td>Complejidad</td>
+                            <td>Baja</td>
+                            <td>Media</td>
+                        </tr>
+                        <tr>
+                            <td>Fiabilidad</td>
+                            <td>Media</td>
+                            <td>Alta (con reintentos)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección: Ejemplos -->
+    <section id="ejemplos" class="section bg-light">
+        <div class="container">
+            <h2>Ejemplos de Webhooks</h2>
+            
+            <div class="tabs">
+                <button class="tab-button active" data-tab="github">GitHub</button>
+                <button class="tab-button" data-tab="stripe">Stripe</button>
+                <button class="tab-button" data-tab="custom">Personalizado</button>
+            </div>
+
+            <div id="github" class="tab-content active">
+                <h3>Webhook de GitHub</h3>
+                <p>Recibir notificaciones cuando se hace push a un repositorio:</p>
+                <pre><code>{
+  "event": "push",
+  "repository": "mi-repo",
+  "branch": "main",
+  "commits": [
+    {
+      "id": "abc123",
+      "message": "Fix: corregir bug en auth",
+      "author": "usuario@example.com"
+    }
+  ],
+  "timestamp": "2026-10-01T10:30:00Z"
+}</code></pre>
+            </div>
+
+            <div id="stripe" class="tab-content">
+                <h3>Webhook de Stripe</h3>
+                <p>Notificación cuando se confirma un pago:</p>
+                <pre><code>{
+  "id": "evt_1234567890",
+  "type": "payment_intent.succeeded",
+  "data": {
+    "object": {
+      "id": "pi_1234567890",
+      "status": "succeeded",
+      "amount": 5000,
+      "currency": "usd",
+      "customer": "cus_123456"
+    }
+  },
+  "timestamp": 1696143000
+}</code></pre>
+            </div>
+
+            <div id="custom" class="tab-content">
+                <h3>Webhook Personalizado</h3>
+                <p>Ejemplo de un webhook personalizado para tu aplicación:</p>
+                <pre><code>{
+  "evento": "usuario.creado",
+  "datos": {
+    "id": 12345,
+    "nombre": "Juan Pérez",
+    "email": "juan@example.com",
+    "fecha_registro": "2026-10-01T10:30:00Z"
+  },
+  "intento": 1,
+  "timestamp": "2026-10-01T10:30:00Z"
+}</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección: Gestor de Webhooks -->
+    <section id="gestor" class="section">
+        <div class="container">
+            <h2>Gestor de Webhooks</h2>
+            
+            <div class="grid-2">
+                <!-- Panel de Estadísticas -->
+                <div class="stats-panel">
+                    <h3>📊 Estadísticas</h3>
+                    <div id="stats" class="stats-content">
+                        <div class="stat">
+                            <div class="stat-value">-</div>
+                            <div class="stat-label">Webhooks Totales</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">-</div>
+                            <div class="stat-label">Activos</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">-</div>
+                            <div class="stat-label">Eventos</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Crear nuevo webhook -->
+                <div class="card">
+                    <h3>➕ Crear Nuevo Webhook</h3>
+                    <form id="webhook-form">
+                        <div class="form-group">
+                            <label>Nombre:</label>
+                            <input type="text" id="webhook-name" placeholder="Mi webhook" required>
+                        </div>
+                        <div class="form-group">
+                            <label>URL:</label>
+                            <input type="url" id="webhook-url" placeholder="https://ejemplo.com/webhook" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Eventos:</label>
+                            <input type="text" id="webhook-events" placeholder="evento1, evento2" required>
+                        </div>
+                        <button type="submit" class="btn btn-success">Crear Webhook</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Lista de Webhooks -->
+            <div class="card mt-20">
+                <h3>📋 Tus Webhooks</h3>
+                <div id="webhooks-list" class="webhooks-list">
+                    <p>Cargando webhooks...</p>
+                </div>
+            </div>
+
+            <!-- Log de Eventos -->
+            <div class="card mt-20">
+                <h3>📝 Log de Eventos Recientes</h3>
+                <div id="logs-list" class="logs-list">
+                    <p>Sin eventos registrados</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Webhooks Demo. Desarrollado con Python, Flask y JavaScript.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
